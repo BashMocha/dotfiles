@@ -1,0 +1,11 @@
+configuration{
+    modi: "combi";
+    show-icons: true;
+    sidebar-mode: true;
+    terminal: "kitty";
+    location: 0;
+    icon-theme: "Oranchello";
+    display-combi: "All";
+}
+
+@theme "squared-nord"
