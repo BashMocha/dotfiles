@@ -147,6 +147,7 @@ coffee_reminder () {
     fi
 
     echo "☕ take a sip!" | lolcat
+    notify-send "☕ take a sip!"
     paplay /usr/share/sounds/freedesktop/stereo/message-new-instant.oga
 }
 
