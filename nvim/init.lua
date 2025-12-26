@@ -26,6 +26,11 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
+-- black formatter
+vim.keymap.set("n", "<C-M-i>", function()
+  vim.cmd("%!black -q -")
+end, { desc = "Format with Black" })
+
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
