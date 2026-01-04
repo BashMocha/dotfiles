@@ -1,3 +1,6 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 require("config.lazy")
 
 -- Old vim configs
@@ -6,7 +9,7 @@ vim.opt.shiftwidth = 4
 vim.opt.clipboard = "unnamedplus"
 
 -- Ctrl + n: File tree toggler
-vim.keymap.set("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
 
 -- Line numbers
 vim.opt.number = true
@@ -26,9 +29,28 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
--- black formatter
-vim.keymap.set("n", "<C-M-i>", function()
-  vim.cmd("%!black -q -")
+-- Open the cheatsheet
+vim.keymap.set("n", "<leader>?", "<cmd>edit ~/.config/nvim/CHEATSHEET.md<CR>", { desc = "Open cheatsheet" })
+
+-- Buffer keybindings
+vim.keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-h>", ":bprev<CR>", { desc = "Prev buffer" })
+vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close buffer" })
+vim.keymap.set("n", "<leader><leader>", "<C-^>", { desc = "Last buffer" })
+
+-- Highlight the current line and its number
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "both"
+
+-- black formatter (saves the cursor position)
+vim.keymap.set("n", "<leader>f", function()
+  local pos = vim.api.nvim_win_get_cursor(0)   -- cursor (row, col)
+  local view = vim.fn.winsaveview()            -- scroll, folds, etc.
+
+  vim.cmd("%!black -q --line-length 79 -")
+
+  vim.fn.winrestview(view)
+  vim.api.nvim_win_set_cursor(0, pos)
 end, { desc = "Format with Black" })
 
 -- disable netrw at the very start of your init.lua
@@ -37,22 +59,3 @@ vim.g.loaded_netrwPlugin = 1
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
-
--- empty setup using defaults
-require("nvim-tree").setup()
-
--- OR setup with some options
-require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-})
