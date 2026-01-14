@@ -42,6 +42,21 @@ vim.keymap.set("n", "<leader><leader>", "<C-^>", { desc = "Last buffer" })
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "both"
 
+-- Enable treesitter
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "python", "bash", "sql", "dockerfile" },
+  callback = function()
+    vim.treesitter.start()
+  end,
+})
+
+-- Move lines without re-indenting
+vim.keymap.set("n", "<M-Up>", ":m .-2<CR>", { desc = "Move line up" })
+vim.keymap.set("n", "<M-Down>", ":m .+1<CR>", { desc = "Move line down" })
+
+vim.keymap.set("v", "<M-Up>", ":m '<-2<CR>gv", { desc = "Move selection up" })
+vim.keymap.set("v", "<M-Down>", ":m '>+1<CR>gv", { desc = "Move selection down" })
+
 -- black formatter (saves the cursor position)
 vim.keymap.set("n", "<leader>f", function()
   local pos = vim.api.nvim_win_get_cursor(0)   -- cursor (row, col)
