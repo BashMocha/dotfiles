@@ -174,6 +174,23 @@ export PYTHONPATH="${PYTHONPATH}:/home/emirbalci/Desktop/vlmaps/"
 
 # fzf settings
 export FZF_DEFAULT_COMMAND='find ~ -type f'
-export FZF_DEFAULT_OPTS="--exact --preview 'batcat --style=numbers --color=always --line-range=:100 {}' --bind 'enter:execute(vim {})+abort' --nth=1"
+export FZF_DEFAULT_OPTS="--exact --preview 'batcat --style=numbers --color=always --line-range=:100 {}' --bind 'enter:execute(nvim {})+abort' --nth=1"
 
-alias fzfd='FZF_DEFAULT_COMMAND="find . -type f | sort" FZF_DEFAULT_OPTS="--exact --preview '\''batcat --style=numbers --color=always --line-range=:100 {}'\'' --bind '\''enter:execute(vim {})+abort'\'' --nth=1" fzf'
+alias fzfd='FZF_DEFAULT_COMMAND="find . -type f | sort" FZF_DEFAULT_OPTS="--exact --preview '\''batcat --style=numbers --color=always --line-range=:100 {}'\'' --bind '\''enter:execute(nvim {})+abort'\'' --nth=1" fzf'
+
+alias rerun-gpu="WGPU_BACKEND=vulkan __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia rerun"
+
+# Setting JAVA_HOME 
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Make yazi to change the directory on exit
+yazi() {
+  local tmp
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  command yazi --cwd-file="$tmp"
+  if [ -f "$tmp" ]; then
+    cd "$(cat "$tmp")"
+    rm -f "$tmp"
+  fi
+}
