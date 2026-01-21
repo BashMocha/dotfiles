@@ -6,11 +6,14 @@ return {
     config = function()
       require("treesitter-context").setup({
         enable = true,
-        multiwindow = false,
-        max_lines = 0,
-        min_window_height = 0,
-        line_numbers = true,
-        multiline_threshold = 10,
+        mode = "topline",
+        multiline_threshold = 1,
+        -- max_lines = 1,
+        patterns = {
+            python = { "class_definition", "function_definition" },
+        },
+
+        line_numbers = false,
       })
     end,
   },

@@ -43,6 +43,7 @@ vim.opt.cursorline = true
 vim.opt.cursorlineopt = "both"
 
 -- Enable treesitter
+-- For this plugin, treesitter-cli should be installed either from cargo or npm
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "python", "bash", "sql", "dockerfile" },
   callback = function()
@@ -56,6 +57,32 @@ vim.keymap.set("n", "<M-Down>", ":m .+1<CR>", { desc = "Move line down" })
 
 vim.keymap.set("v", "<M-Up>", ":m '<-2<CR>gv", { desc = "Move selection up" })
 vim.keymap.set("v", "<M-Down>", ":m '>+1<CR>gv", { desc = "Move selection down" })
+
+-- Switch between themes
+vim.keymap.set("n", "<leader>th", function()
+  require("telescope.builtin").colorscheme({ enable_preview = true })
+end, { desc = "Pick theme (with preview)" })
+
+-- Control the indentation with the arrow keys
+vim.keymap.set("v", "<Left>",  "<gv", { noremap=true, silent=true })
+vim.keymap.set("v", "<Right>", ">gv", { noremap=true, silent=true })
+
+-- Set line length marker
+-- Python-only: show a guide at column 79
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    vim.opt_local.colorcolumn = "80"
+    -- Optional: keep formatting expectations consistent
+    -- vim.opt_local.textwidth = 79
+  end,
+})
+
+-- Make the column clearly visible
+vim.api.nvim_set_hl(0, "ColorColumn", {
+  bg = "#3a1f1f",  -- change to taste
+})
+
 
 -- black formatter (saves the cursor position)
 vim.keymap.set("n", "<leader>f", function()
