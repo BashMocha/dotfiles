@@ -1,7 +1,13 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
 require("config.lazy")
+
+-- Set the theme
+vim.cmd.colorscheme("tokyonight-moon")
 
 -- Old vim configs
 vim.opt.expandtab = true
@@ -64,8 +70,8 @@ vim.keymap.set("n", "<leader>th", function()
 end, { desc = "Pick theme (with preview)" })
 
 -- Control the indentation with the arrow keys
-vim.keymap.set("v", "<Left>",  "<gv", { noremap=true, silent=true })
-vim.keymap.set("v", "<Right>", ">gv", { noremap=true, silent=true })
+vim.keymap.set("v", "<A-Left>",  "<gv", { noremap=true, silent=true })
+vim.keymap.set("v", "<A-Right>", ">gv", { noremap=true, silent=true })
 
 -- Set line length marker
 -- Python-only: show a guide at column 79
@@ -83,7 +89,6 @@ vim.api.nvim_set_hl(0, "ColorColumn", {
   bg = "#3a1f1f",  -- change to taste
 })
 
-
 -- black formatter (saves the cursor position)
 vim.keymap.set("n", "<leader>f", function()
   local pos = vim.api.nvim_win_get_cursor(0)   -- cursor (row, col)
@@ -99,5 +104,3 @@ end, { desc = "Format with Black" })
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- optionally enable 24-bit colour
-vim.opt.termguicolors = true
