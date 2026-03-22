@@ -19,9 +19,13 @@ vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle Nvi
 
 -- Line numbers
 vim.opt.number = true
+vim.opt.relativenumber = true
 
 -- LSP keybindings
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "gd", function()
+  vim.lsp.buf.definition()
+  vim.cmd("normal! zz")
+end, { desc = "Go to definition (centered)" })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "References" })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover docs" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
@@ -89,6 +93,9 @@ vim.api.nvim_set_hl(0, "ColorColumn", {
   bg = "#3a1f1f",  -- change to taste
 })
 
+-- After yanking, cursor stays at the bottom instead of jumping
+vim.keymap.set("x", "y", "y`>", { noremap = true })
+
 -- black formatter (saves the cursor position)
 vim.keymap.set("n", "<leader>f", function()
   local pos = vim.api.nvim_win_get_cursor(0)   -- cursor (row, col)
@@ -97,7 +104,13 @@ vim.keymap.set("n", "<leader>f", function()
   vim.cmd("%!black -q --line-length 79 -")
 
   vim.fn.winrestview(view)
-  vim.api.nvim_win_set_cursor(0, pos)
+  
+  -- Clamp cursor position
+  local line_count = vim.api.nvim_buf_line_count(0)
+  local new_row = math.min(pos[1], line_count)
+  local line = vim.api.nvim_buf_get_lines(0, new_row - 1, new_row, false)[1] or ""
+  local new_col = math.min(pos[2], #line)
+  vim.api.nvim_win_set_cursor(0, { new_row, new_col })
 end, { desc = "Format with Black" })
 
 -- disable netrw at the very start of your init.lua
