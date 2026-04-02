@@ -113,6 +113,15 @@ vim.keymap.set("n", "<leader>f", function()
   vim.api.nvim_win_set_cursor(0, { new_row, new_col })
 end, { desc = "Format with Black" })
 
+-- Copilot keymaps
+vim.keymap.set("n", "<leader>ce", ":Copilot enable<CR>")
+vim.keymap.set("n", "<leader>cd", ":Copilot disable<CR>")
+
+
+vim.keymap.set("i", "<C-l>", function()
+  require("copilot.suggestion").accept()
+end)
+
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
